@@ -60,19 +60,9 @@ class CartController {
     try {
       const check = await this.checkCart(req.body.product_id, req.body.user_id);
       const product = await Product.findOne({ _id: req.body.product_id });
-
-      /* 
-        - số lượng sản phẩm của sản phẩm đã tồn tại trong giỏ = 
-            số lượng sản phẩm trong giỏ của sản phẩm đó + số lượng mua thêm
-          * Lưu ý *
-            - nếu sản chưa có trong giỏ thì số lượng trong giỏ mặc định = 0
-          *      *
-      */
+     // nếu sl sản phẩm tồn tại trong kho update amount
       const new_amountCart = +check.current_amount + +req.body.amount;
-      /* 
-        tính lại số sản phẩm còn trong kho = 
-          số lượng còn  - số lượng mua
-      */
+      // tinh lai sl sp trong kho
       const new_amountProduct = +product.amount - +req.body.amount;
 
       const result = this.convert_money(req.body.one_pr_price, new_amountCart);

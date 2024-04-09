@@ -129,8 +129,7 @@ function routes(app) {
 	});
 
 	// lấy ra tất cả profile user (quyền admin)
-	app.get(
-		"/admin/all-user",
+	app.get("/admin/all-user",
 		(req, res, next) => {
 			const role = req.body.role;
 			if (role === "USER_ROLE") {
@@ -202,7 +201,7 @@ function routes(app) {
 	app.post("/admin/update-user", async (req, res) => {
 		try {
 			let account = req.body;
-			console.log(account, 'account is')
+			console.log(account, "account is");
 			const { _id, ...temp } = account;
 			await AccountController.updateAccountById(_id, temp);
 			return res.json({
@@ -218,13 +217,16 @@ function routes(app) {
 	});
 
 	// delete account by id
-	app.post("/admin/delete-account", AccountController.deleteAccount)
+	app.post("/admin/delete-account", AccountController.deleteAccount);
 
 	// xóa sản phẩm trong admin
 	app.post("/admin/delete-product", ProductController.handleDeleteProduct);
 
 	// search product
 	app.post("/search-product", ProductController.handleSearchProduct);
+
+	// statisticsProduct
+	app.get("/statistics-product", ProductController.statisticsProduct);
 }
 
 module.exports = routes;

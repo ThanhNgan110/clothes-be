@@ -1,7 +1,7 @@
 const Product = require("../models/product");
 const Classify = require("../models/classify");
 const CartController = require("./CartController");
-
+const Bill = require("../models/bill");
 class ProductController {
 	//update lai một trường dữ liệu trong sản phẩm
 	async updateProduct(id, Obj) {
@@ -41,15 +41,16 @@ class ProductController {
 		};
 	}
 
-	// lấy dữ liệu trang home
-	async getHome(limit_product) {
-		// lấy ra tất những thương có trong database
+	// get all dl home
+	async getHome() {
+		// get all category inside db
 		const arr = await Classify.find();
-		const classifys = arr.map((item) => item.name);
+		const classifyName = arr.map((item) => item.name);
 
-		// thực hiện gọi hàm để lấy ra những sản phẩm theo
-		// thương hiệu
-		const promises = classifys.map((item) => this.getProductByClassify(item));
+		// get all product by classifyName
+		const promises = classifyName.map((item) =>
+			this.getProductByClassify(item)
+		);
 		return Promise.all(promises);
 	}
 
@@ -82,7 +83,6 @@ class ProductController {
 		} catch (error) {
 			return res.json({
 				err: false,
-				// mess:""
 			});
 		}
 	}
@@ -106,7 +106,7 @@ class ProductController {
 	}
 
 	// Search Product
-	async handleSearchProduct(req, res) {
+	async handleSearchProduct() {
 		try {
 			const keyword = req.body.name;
 			console.log("param", keyword);
@@ -121,6 +121,29 @@ class ProductController {
 				});
 			}
 			return res.json(resultSearch);
+		} catch (error) {
+			return res.json({
+				error: true,
+				mess: "Có lỗi trong quá trình thực hiện",
+			});
+		}
+	}
+
+	async statisticsProduct(req, res) {
+		try {
+			const products = await Product.find({});
+			const bills = await Bill.find({}).count();
+			let sum = 0;
+			let value = 0;
+			products.forEach((element) => {
+				sum += parseInt(element.amount);
+				value += parseInt(element.amount) * parseInt(element.price);
+			});
+			return res.json({
+				countProducts: sum, // tổng số lượng trong kho
+				valueProducts: value, // tổng giá trị trong kho
+				countBills: bills, // tổng bill đã pán
+			});
 		} catch (error) {
 			return res.json({
 				error: true,
