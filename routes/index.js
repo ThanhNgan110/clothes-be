@@ -90,12 +90,12 @@ function routes(app) {
 
 	// chức năng thanh toán
 	app.post("/user/payment", async (req, res) => {
-		const order_list = JSON.parse(req.body.cart_list);
+		const product_id = JSON.parse(req.body.cart_list);
 		const user_id = req.headers.islogin;
 		return res.json(
 			await BillController.payment({
 				user_id,
-				order_list,
+				product_id,
 			})
 		);
 	});

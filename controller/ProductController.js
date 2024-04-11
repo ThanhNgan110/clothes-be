@@ -16,6 +16,7 @@ class ProductController {
 	// kiểm tra thương hiệu đó có tồn tại không
 	checkClassify(classify) {
 		return Classify.findOne({ name: classify }).then((data) => {
+			// if exites
 			if (Boolean(data)) {
 				return false;
 			}
@@ -26,6 +27,7 @@ class ProductController {
 	// lấy ra tất cả sản phẩm của thương hiệu bất kỳ
 	async getProductByClassify(classify, check1 = false) {
 		const check = await this.checkClassify(classify);
+		console.log('check', check);
 		if (!check) {
 			const data = !check1
 				? await Product.find({ classify }).limit(3)

@@ -3,7 +3,7 @@ const mongoose = require("mongoose");
 const Bill = new mongoose.Schema(
   {
     //Lưu id_của đơn hàng theo từng user
-    order_list: {
+    product_id: {
       type: String,
       maxlength: 300,
     },

@@ -21,6 +21,7 @@ class AccountController {
 				username: req.body.username,
 				role: req.body.role,
 			});
+			console.log(account)
 			if (Boolean(account)) {
 				const compare = await bcrypt.compare(
 					req.body.password,
