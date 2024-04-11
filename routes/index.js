@@ -2,8 +2,10 @@ const AccountController = require("../controller/AccountController");
 const ProductController = require("../controller/ProductController");
 const CartController = require("../controller/CartController");
 const BillController = require("../controller/BillController");
+const ClassifyController = require("../controller/ClassifyController");
 
 const Account = require("../models/account");
+const classify = require("../models/classify");
 
 function routes(app) {
 	// render home
@@ -129,7 +131,8 @@ function routes(app) {
 	});
 
 	// lấy ra tất cả profile user (quyền admin)
-	app.get("/admin/all-user",
+	app.get(
+		"/admin/all-user",
 		(req, res, next) => {
 			const role = req.body.role;
 			if (role === "USER_ROLE") {
@@ -227,6 +230,25 @@ function routes(app) {
 
 	// statisticsProduct
 	app.get("/statistics-product", ProductController.statisticsProduct);
+
+	// get all classify
+	app.get("/classify", async (req, res) => {
+		try {
+			const categories = await ClassifyController.getAllClassify();
+			res.json(categories); // Trả về dữ liệu dưới dạng JSON
+		} catch (error) {
+			console.error("Error while fetching classify:", error);
+			res.status(500).json({ error: "Internal server error" }); // Trả về lỗi 500
+		}
+	});
+	// add classify
+	app.post("/add-classify", ClassifyController.addClassify);
+
+	// delete classify
+	app.post("/delete-classify", ClassifyController.deleteClassify);
+
+	// update classify
+	app.post("/update-classify", ClassifyController.updateClassify);
 }
 
 module.exports = routes;

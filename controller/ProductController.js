@@ -3,7 +3,7 @@ const Classify = require("../models/classify");
 const CartController = require("./CartController");
 const Bill = require("../models/bill");
 class ProductController {
-	//update lai một trường dữ liệu trong sản phẩm
+	//update product
 	async updateProduct(id, Obj) {
 		return await Product.updateOne({ _id: id }, { ...Obj });
 	}
@@ -87,7 +87,7 @@ class ProductController {
 		}
 	}
 
-	// xóa sản phẩm
+	// DeleteProduct
 	async handleDeleteProduct(req, res) {
 		try {
 			const _id = req.body._id;

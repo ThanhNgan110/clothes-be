@@ -102,8 +102,9 @@ class AccountController {
 	async deleteAccount(req, res) {
 		try {
 			const id = req.body;
+			console.log(id, "accoutn_id");
 			console.log(id);
-			await Account.deleteOne({ id });
+			await Account.deleteOne({ _id: id });
 			return res.json({
 				err: false,
 				mess: "Xóa thành công",
